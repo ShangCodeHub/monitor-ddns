@@ -1,0 +1,4 @@
+alibabacloud-dysmsapi20170525>=2.0.0
+alibabacloud-tea-openapi>=0.3.0
+alibabacloud-tea-util>=0.3.0
+requests>=2.28.0
