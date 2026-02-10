@@ -88,8 +88,9 @@ pip install -r requirements.txt
 
 ### 第三步：创建并填写 config.env
 
-1. 在 **`monitor-ddns`** 目录下（与 `ipScan.py` 同级）新建一个文本文件，命名为 **`config.env`**（注意没有空格，后缀是 `.env`）。  
-2. 用记事本或 VS Code 打开，按下面 **逐项填写**，不要有多余空格或引号。
+1. 在 **`monitor-ddns`** 目录下（与 `ipScan.py` 同级）将 **`config.env.example`** 复制为 **`config.env`**（或新建同名文件）。  
+2. 用记事本或 VS Code 打开 **`config.env`**，按下面 **逐项填写**。**阿里云 AccessKey、西部数码 ApiKey 等仅保存在 config.env，勿提交到 Git。**  
+3. 填写时不要有多余空格或引号。
 
 #### 3.1 阿里云短信（告警用）
 
@@ -97,8 +98,8 @@ pip install -r requirements.txt
 |--------|------|------|------|
 | `SMS_ALIYUN_ENABLED` | 是 | 是否启用短信 | `true` |
 | `SMS_ALIYUN_REGION_ID` | 是 | 区域 | `cn-hangzhou` |
-| `SMS_ALIYUN_ACCESS_KEY_ID` | 是 | 阿里云 AccessKey ID | 控制台 RAM 里复制 |
-| `SMS_ALIYUN_ACCESS_KEY_SECRET` | 是 | 阿里云 AccessKey Secret | 同上 |
+| `SMS_ALIYUN_ACCESS_KEY_ID` | 是 | 阿里云 AccessKey ID（勿提交到仓库） | 控制台 RAM 里复制 |
+| `SMS_ALIYUN_ACCESS_KEY_SECRET` | 是 | 阿里云 AccessKey Secret（勿提交到仓库） | 同上 |
 | `SMS_ALIYUN_SIGN_NAME` | 是 | 短信签名名称 | 在短信控制台申请的签名 |
 | `SMS_ALIYUN_TEMPLATE_CODE` | 是 | 短信模板 Code | 如 `SMS_502210001` |
 | `SMS_ALIYUN_TEMPLATE_PARAM_NAME` | 否 | 模板里变量名，多为验证码 | `code` |
@@ -120,23 +121,23 @@ pip install -r requirements.txt
 | 配置项 | 必填 | 说明 | 示例 |
 |--------|------|------|------|
 | `WESTCN_DOMAIN` | 是 | 主域名（不带 www 和子域名） | `example.com` |
-| `WESTCN_APIKEY` | 是 | 该域名在西部数码的 ApiKey | 在西部数码域名详情页复制 |
+| `WESTCN_APIKEY` | 是 | 该域名在西部数码的 ApiKey（勿提交到仓库） | 在西部数码域名详情页复制 |
 | `WESTCN_HOSTNAMES` | 是 | 要自动更新 A 记录的子域名，多个用英文逗号 | `nas,www,sci-z` |
 
 **对应关系**：`WESTCN_HOSTNAMES=nas,www` 表示会更新 `nas.你的主域名`、`www.你的主域名` 的 A 记录；`MONITOR_URLS` 里填的地址应包含这些主机名（如 `http://nas.example.com:8080/`），这样监控和 DDNS 一致。
 
-#### 3.4 config.env 完整示例（请替换成你自己的值）
+#### 3.4 config.env 完整示例（请替换成你自己的值，**密钥勿提交到 Git**）
 
 ```env
-# ---------- 阿里云短信 ----------
+# ---------- 阿里云短信（密钥仅保存在本地 config.env，勿提交） ----------
 SMS_ALIYUN_ENABLED=true
 SMS_ALIYUN_REGION_ID=cn-hangzhou
-SMS_ALIYUN_ACCESS_KEY_ID=你的AccessKeyId
-SMS_ALIYUN_ACCESS_KEY_SECRET=你的AccessKeySecret
-SMS_ALIYUN_SIGN_NAME=你的短信签名
-SMS_ALIYUN_TEMPLATE_CODE=SMS_502210001
+SMS_ALIYUN_ACCESS_KEY_ID=***请填写阿里云AccessKeyId***
+SMS_ALIYUN_ACCESS_KEY_SECRET=***请填写阿里云AccessKeySecret***
+SMS_ALIYUN_SIGN_NAME=***你的短信签名***
+SMS_ALIYUN_TEMPLATE_CODE=SMS_xxx
 SMS_ALIYUN_TEMPLATE_PARAM_NAME=code
-SMS_ALIYUN_PHONE_NUMBERS=13800138000,13900139000
+SMS_ALIYUN_PHONE_NUMBERS=13800138000
 SMS_COOLDOWN_SECONDS=3600
 
 # ---------- 域名监控 ----------
@@ -146,13 +147,13 @@ MONITOR_URLS=http://nas.example.com:8080/,http://www.example.com/
 MONITOR_TIMEOUT=10
 MONITOR_CHECK_TYPE=ping
 
-# ---------- 西部数码 DDNS ----------
+# ---------- 西部数码 DDNS（ApiKey 仅保存在本地 config.env，勿提交） ----------
 WESTCN_DOMAIN=example.com
-WESTCN_APIKEY=你的西部数码ApiKey
+WESTCN_APIKEY=***请填写西部数码域名ApiKey***
 WESTCN_HOSTNAMES=nas,www
 ```
 
-保存后确认 **`config.env` 与 `ipScan.py` 在同一目录**（即都在 `monitor-ddns` 下）。
+保存后确认 **`config.env` 与 `ipScan.py` 在同一目录**（即都在 `monitor-ddns` 下）。**请勿将 `config.env` 提交到 Git**（已通过 `.gitignore` 排除）。
 
 ---
 
@@ -249,7 +250,8 @@ python ipScan.py --monitor
 ```
 monitor-ddns/
 ├── README.md                 # 本说明（GitHub 主页）
-├── config.env                # 本地配置（需自行创建，不提交）
+├── config.env.example        # 配置项示例（无密钥，可提交）
+├── config.env                # 本地配置（需自行创建，勿提交）
 ├── requirements.txt         # Python 依赖
 ├── ipScan.py                 # 主程序：短信 + 监控 + 调用 DDNS
 ├── get_public_ip.py          # 公网 IP 查询
@@ -270,9 +272,9 @@ monitor-ddns/
 
 ## 安全与注意事项
 
-1. **不要提交 `config.env`**：其中包含 AccessKey、ApiKey、手机号等敏感信息，已通过 `.gitignore` 排除。  
-2. **阿里云密钥**：建议使用 RAM 子账号并仅授予短信与必要权限。  
-3. **西部数码 ApiKey**：仅在控制台为该域名开通，并妥善保管。
+1. **不要提交 `config.env`**：其中包含阿里云 AccessKey、西部数码 ApiKey、手机号等敏感信息，已通过 `.gitignore` 排除；仅使用本地 `config.env`，仓库内只保留无密钥的 `config.env.example`。  
+2. **阿里云密钥**：建议使用 RAM 子账号并仅授予短信与必要权限，切勿写入代码或文档。  
+3. **西部数码 ApiKey**：仅在控制台为该域名开通，仅保存在本地 config.env，并妥善保管。
 
 ---
 

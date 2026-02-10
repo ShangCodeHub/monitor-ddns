@@ -46,17 +46,17 @@
 
 ## 在 config.env 里怎么写
 
-在 `config.env` 中增加（或使用环境变量）：
+在 `config.env` 中增加（或使用环境变量）。**注意：ApiKey 为敏感信息，请勿提交到 Git。**
 
 ```env
-# 西部数码 DDNS（动态解析）
-WESTCN_DOMAIN=ritual-edu.com
-WESTCN_APIKEY=这里粘贴从西部数码复制的ApiKey
+# 西部数码 DDNS（动态解析，密钥勿提交）
+WESTCN_DOMAIN=你的主域名
+WESTCN_APIKEY=***请填写西部数码域名详情页复制的ApiKey***
 WESTCN_HOSTNAMES=nas,sci-z
 ```
 
-- **WESTCN_DOMAIN**：上面第 1 条，你的主域名。
-- **WESTCN_APIKEY**：上面第 2 条，从西部数码域名详情页复制的 ApiKey。
+- **WESTCN_DOMAIN**：上面第 1 条，你的主域名（示例：example.com）。
+- **WESTCN_APIKEY**：上面第 2 条，从西部数码域名详情页复制的 ApiKey，**仅保存在本地 config.env**。
 - **WESTCN_HOSTNAMES**：要更新 A 记录的主机名，多个用英文逗号分隔。  
   - `nas` 表示 `nas.ritual-edu.com`  
   - `@` 表示根域名 `ritual-edu.com`  
